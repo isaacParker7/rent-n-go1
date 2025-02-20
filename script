@@ -1,0 +1,40 @@
+document.addEventListener('DOMContentLoaded', function() {
+    const postItemForm = document.getElementById('post-item-form');
+    postItemForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const itemName = document.getElementById('item-name').value;
+        const itemDescription = document.getElementById('item-description').value;
+        const itemPrice = document.getElementById('item-price').value;
+        const itemImage = document.getElementById('item-image').value;
+        
+        const item = {
+            name: itemName,
+            description: itemDescription,
+            price: itemPrice,
+            image: itemImage
+        };
+
+        let items = JSON.parse(localStorage.getItem('items')) || [];
+        items.push(item);
+        localStorage.setItem('items', JSON.stringify(items));
+
+        alert('Item posted successfully!');
+        postItemForm.reset();
+    });
+
+    const itemsContainer = document.getElementById('items-container');
+    if (itemsContainer) {
+        const items = JSON.parse(localStorage.getItem('items')) || [];
+        items.forEach(item => {
+            const itemElement = document.createElement('div');
+            itemElement.classList.add('item');
+            itemElement.innerHTML = `
+                <h3>${item.name}</h3>
+                <img src="${item.image}" alt="${item.name}">
+                <p>${item.description}</p>
+                <p>Price per day: $${item.price}</p>
+            `;
+            itemsContainer.appendChild(itemElement);
+        });
+    }
+});
